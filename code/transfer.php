@@ -2,30 +2,36 @@
 
 /**
  * Function transfer money between clients
- * @param array $clientFrom Client who transfer money
- * @param array $clientTo Client who get money
+ * @param Client $clientFrom Client who transfer money
+ * @param Client $clientTo Client who get money
  * @param int $amount Amount of money
  * @throws Exception
  */
-function transfer($clientFrom, &$clientTo, $amount)
+function transfer($clientFrom, $clientTo, $amount)
 {
-    if ($clientFrom['moneyAmount'] > $amount) {
-        $clientTo['moneyAmount'] += $amount;
-        $clientFrom['moneyAmount'] -= $amount;
+    if ($clientFrom->moneyAmount > $amount) {
+        $clientTo->moneyAmount += $amount;
+        $clientFrom->moneyAmount -= $amount;
     } else {
         throw new Exception('Not enough money');
     }
 }
 
+class Client {
+    public $name;
+    public $moneyAmount;
 
-$clientA = [
-    'name' => 'clientA',
-    'moneyAmount' => 100,
-];
+    public function  __construct($name, $amount)
+    {
+        $this->name = $name;
+        $this->moneyAmount = $amount;
+    }
+}
 
-$clientB = [
-    'name' => 'clientB',
-    'moneyAmount' => 200,
-];
+
+$clientA = new Client('clientA', 100);
+$clientB = new Client('clientB', 200);
 
 transfer($clientA, $clientB, 50);
+
+var_dump($clientA, $clientB);
